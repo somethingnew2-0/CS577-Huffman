@@ -6,6 +6,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.zip.Inflater;
 
 public class Huffman {
 
@@ -14,21 +15,21 @@ public class Huffman {
 	 */
 	public static void main(String[] args) {
 		Scanner in = null; // for input from text file
-		PrintStream out = null; // for output to html file
+//		PrintStream out = null; // for output to html file
 		// dictionary used to store keywords
 		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>();
 
 		// Make sure the input file exists and can be read
 		try {
-			File inFile = new File(args[0]);
+			File inFile = new File("data/washington/first_inaugural_address.txt");
 			if (!inFile.exists() || !inFile.canRead()) {
-				System.err.println("Error: cannot access file " + args[0]);
+				System.err.println("Error: cannot access file " + inFile.getAbsolutePath());
 				System.exit(1);
 			}
 
 			in = new Scanner(inFile);
 		} catch (FileNotFoundException e) {
-			System.err.println("Error: cannot access file " + args[0]);
+			System.err.println("Error: cannot access file");
 			System.exit(1);
 		}
 
@@ -82,6 +83,8 @@ public class Huffman {
 			}
 
 		} // end while
+		
+		System.out.println(dictionary.size());
 	}
 	
 	private static List<String> parseLine(String line) {
