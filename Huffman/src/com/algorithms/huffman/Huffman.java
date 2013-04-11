@@ -1,12 +1,8 @@
 package com.algorithms.huffman;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
-import java.util.zip.Inflater;
+
+import java.util.*;
+import java.io.*;
 
 public class Huffman {
 
@@ -85,6 +81,10 @@ public class Huffman {
 		} // end while
 		
 		System.out.println(dictionary.size());
+
+
+	        File inFile = new File("test.txt");
+        	calcFrequency(inFile);
 	}
 	
 	private static List<String> parseLine(String line) {
@@ -130,8 +130,33 @@ public class Huffman {
 			if (done)
 				words.add(word);
 		}
-
 		return words;
+	}
+	
+	public static HashMap<String, Double> calcFrequency(File inFile) {
+		Scanner stdin = null;
+		HashMap<String, Double> map = new HashMap<String, Double>();
+		double count = 0;
+		
+		try {
+			stdin = new Scanner(inFile);
+		} catch (FileNotFoundException e) {
+			System.out.println("File " + inFile + " not found.");
+			System.exit(0);
+		}
+		
+		while (stdin.hasNext()) {
+			String line = stdin.next();
+			String[] tokens = line.split(" ");
+			System.out.println(tokens[0]);
+			for (String word:tokens) {
+				count = map.get(word);
+				count++;
+				map.put(word, count);
+			}
+			System.out.println(tokens[0]);
+		}
+		return new HashMap<String, Double>();
 	}
 
 }
