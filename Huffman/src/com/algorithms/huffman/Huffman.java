@@ -24,8 +24,8 @@ public class Huffman {
 				System.exit(-1);
 			}
 			try {
-				// open file and parse all words
 				stdin = new Scanner(inFile);
+				// add all words from all speeches with a frequency of 1
 			    smooth(dictionary, stdin);
 			} catch (FileNotFoundException ex) {
 				System.out.println("Unable to find file: " + inFile.getName());
@@ -33,6 +33,7 @@ public class Huffman {
 			}
 		}
 		
+		// build huffman code using subset of files
 		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\2010_01_27_5706.txt");
 		if (!inFile.exists() || !inFile.canRead()) {
 			System.out.println("Improper file: " + inFile.getName());
@@ -45,13 +46,14 @@ public class Huffman {
 			System.out.println("Unable to find file: " + inFile.getName());
 			System.exit(-1);
 		}
-		HuffmanTree<String> tree = makeHuffman(dictionary);
 		
-		System.out.println(dictionary.size());
+		HuffmanTree<String> tree = makeHuffman(dictionary);
+		//int depth = tree.getDepth(tree.getRoot());
+		//System.out.println(depth + "\n" + dictionary.size());
 	}
 	
 	/*
-	 * Create the Huffman code tree using the words in all of the speeches
+	 * Create the Huffman code tree using the words in a certain set of speeches
 	 */
 	public static HuffmanTree<String> makeHuffman(BSTDictionary<KeyWord> dictionary) {
 		
@@ -69,6 +71,8 @@ public class Huffman {
 			HuffmanNode<String> node = new HuffmanNode<String>();
 			node.setData(keyword.getWord());
 			node.setFreq(keyword.getOccurrences());
+			node.setVisited(false);
+			node.removeChildren();
 			queue.add(node);
 		}
 		
@@ -87,8 +91,8 @@ public class Huffman {
 			newNode =  new HuffmanNode<String>();
 			newNode.setFreq(sum);
 			// add the other two nodes as its children
-			newNode.addChild(node1);
-			newNode.addChild(node2);
+			newNode.leftChild(node1);
+			newNode.rightChild(node2);
 			node1.setParent(newNode);
 			node2.setParent(newNode);
 			queue.add(newNode);
@@ -101,8 +105,8 @@ public class Huffman {
 		newNode =  new HuffmanNode<String>();
 		newNode.setFreq(sum);
 		// add the other two nodes as its children
-		newNode.addChild(node1);
-		newNode.addChild(node2);
+		newNode.leftChild(node1);
+		newNode.rightChild(node2);
 		node1.setParent(newNode);
 		node2.setParent(newNode);
 		tree.setRoot(newNode);

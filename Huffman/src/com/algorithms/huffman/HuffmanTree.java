@@ -16,4 +16,17 @@ public class HuffmanTree<T> {
 		this.root = node;
 	}
 	
+	public HuffmanNode<T> getRoot() {
+		return this.root;
+	}
+	
+	public int getDepth(HuffmanNode<T> node) {		
+		if (node == null) {
+			System.out.println("node is null");
+			return 0;
+		}
+		else {
+			return 1 + Math.max(getDepth(node.rightChild), getDepth(node.leftChild));
+		}
+	}
 }

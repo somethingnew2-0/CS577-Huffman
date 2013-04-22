@@ -10,8 +10,10 @@ public class HuffmanNode<T> implements Comparable {
 	
 		private T data;
 		private double frequency;
+		public boolean visited;
 		private HuffmanNode<T> parent;
 		private List<HuffmanNode<T>> children;
+		public HuffmanNode<T> rightChild, leftChild;
 		
 		public void setData(T data) {
 			this.data = data;
@@ -33,16 +35,21 @@ public class HuffmanNode<T> implements Comparable {
 			this.parent = parent;
 		}
 		
-		public void addChild(HuffmanNode<T> child) {
-			this.children.add(child);
+		public void setVisited(boolean visited) {
+			this.visited = visited;
 		}
 		
-		public void removeChild(HuffmanNode<T> child) {
-			this.children.remove(child);
+		public void leftChild(HuffmanNode<T> child) {
+			this.leftChild = child;
+		}
+		
+		public void rightChild(HuffmanNode<T> child) {
+			this.rightChild = child;
 		}
 		
 		public void removeChildren() {
-			this.children = new ArrayList<HuffmanNode<T>>();
+			this.rightChild = null;
+			this.leftChild = null;
 		}
 		
 		public int compareTo(Object other) {
