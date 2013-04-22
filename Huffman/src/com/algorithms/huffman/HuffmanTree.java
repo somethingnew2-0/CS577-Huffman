@@ -12,5 +12,8 @@ public class HuffmanTree<T> {
 		root.removeChildren ();
 	}
 	
+	public void setRoot(HuffmanNode<T> node) {
+		this.root = node;
+	}
 	
 }

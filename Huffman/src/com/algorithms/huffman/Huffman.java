@@ -59,28 +59,55 @@ public class Huffman {
 		// iterate over all words in the dictionary
 		Iterator<KeyWord> it = dictionary.iterator();
 		// queue of words sorted by frequency
-		PriorityQueue<KeyWord> queue = new PriorityQueue<KeyWord>();
+		PriorityQueue<HuffmanNode<String>> queue = new PriorityQueue<HuffmanNode<String>>();
+		HuffmanNode<String> node1, node2;
 		KeyWord keyword;
-		KeyWord keyword2;
 		// place all keywords into priority queue, least # occurrences at the head
 		while(it.hasNext()) {
+			// turn them into huffman nodes
 			keyword = (KeyWord)it.next();
-			queue.add(keyword);
+			HuffmanNode<String> node = new HuffmanNode<String>();
+			node.setData(keyword.getWord());
+			node.setFreq(keyword.getOccurrences());
+			queue.add(node);
 		}
 		
-		Iterator<KeyWord> itq = queue.iterator();
 		// make first node in list the root
-		HuffmanNode<String> node = new HuffmanNode<String>();
-		keyword = (queue.peek());
-		node.setData(keyword.getWord());
-			
-		while(queue.size() >= 2) {
-			keyword = itq.next();
-			keyword2 = itq.next();
-			
+		HuffmanTree<String> tree = new HuffmanTree(queue.peek());
+		double sum;
+		HuffmanNode<String> newNode;
+		
+		// make sure at least 2 nodes left in the queue
+		while(queue.size() > 2) {
+			node1 = queue.poll();
+			node2 = queue.poll();
+			// take the sum of their two frequencies
+			sum = node1.getFreq() + node2.getFreq();
+			// make a new internal node with this new frequency
+			newNode =  new HuffmanNode<String>();
+			newNode.setFreq(sum);
+			// add the other two nodes as its children
+			newNode.addChild(node1);
+			newNode.addChild(node2);
+			node1.setParent(newNode);
+			node2.setParent(newNode);
+			queue.add(newNode);
 		}
 		
-		return null;
+		node1 = queue.poll();
+		node2 = queue.poll();
+		sum = node1.getFreq() + node2.getFreq();
+		// make a new internal node with this new frequency
+		newNode =  new HuffmanNode<String>();
+		newNode.setFreq(sum);
+		// add the other two nodes as its children
+		newNode.addChild(node1);
+		newNode.addChild(node2);
+		node1.setParent(newNode);
+		node2.setParent(newNode);
+		tree.setRoot(newNode);
+		
+		return tree;
 	}
 	
 	/*
