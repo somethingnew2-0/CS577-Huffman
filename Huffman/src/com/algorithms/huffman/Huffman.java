@@ -33,6 +33,7 @@ public class Huffman {
 		
 		// build huffman code using subset of files
 		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\1789_04_30_3446.txt");
+		int numWords = 0;
 		if (!inFile.exists() || !inFile.canRead()) {
 			System.out.println("Improper file: " + inFile.getName());
 			System.exit(-1);
@@ -40,6 +41,8 @@ public class Huffman {
 		try {
 			stdin = new Scanner(inFile);
 			parseFile(dictionary, stdin);
+			stdin = new Scanner(inFile);
+			numWords = countWords(stdin);
 		} catch (FileNotFoundException ex) {
 			System.out.println("Unable to find file: " + inFile.getName());
 			System.exit(-1);
@@ -47,8 +50,8 @@ public class Huffman {
 		
 		HuffmanTree<String> tree = makeHuffman(dictionary);
 		
-		/* Test Code
-		Iterator<KeyWord> it = dictionary.iterator();
+		// Test Code
+		/*Iterator<KeyWord> it = dictionary.iterator();
 		while (it.hasNext()) {
 			KeyWord word = it.next();
 			System.out.println(word.getWord() + ": " + word.getOccurrences());
@@ -57,21 +60,41 @@ public class Huffman {
 		System.out.println("Height = " + height);
 		System.out.println("Root weight = " + tree.getRoot().getFreq());*/
 		
-		System.out.println(dictionary.size());
-		calcCompression(dictionary, tree);
+		System.out.println("Dict size : " + dictionary.size());
+		System.out.println("# words : " + numWords);
+		double ratio = calcCompression(dictionary, tree, numWords);
+		System.out.println("compression ratio : " + ratio);
 	}
 	
-	public static double calcCompression(BSTDictionary<KeyWord> dictionary, HuffmanTree<String> tree) {
-		int height = tree.getHeight();
-		int size = dictionary.size();
+	/*
+	 * Returns number of words in speech to be compressed.
+	 */
+	public static int countWords(Scanner stdin) {
+		int count = 0;
+		while (stdin.hasNext()) {
+			stdin.next();
+			count++;
+		}
+		return count;
+	}
+	
+	/*
+	 * Calculates the compression ratio of huffman method over block method.
+	 */
+	public static double calcCompression(BSTDictionary<KeyWord> dictionary, HuffmanTree<String> tree, int numWords) {
+		double height = tree.getHeight();
+		double size = dictionary.size();
 		double blockCompression;
-		double HuffmanCompression;
+		double huffmanCompression;
 		
 		blockCompression = (double)(Math.log(size)/Math.log(2));
-		System.out.println(blockCompression);
-		HuffmanCompression = size * height;
-		System.out.println(HuffmanCompression);
-		return 0;
+		blockCompression = blockCompression * numWords;
+		System.out.println("block compression : "  + blockCompression);
+		huffmanCompression = numWords * height;
+		System.out.println("huffman compression : " + huffmanCompression);
+		double ratio = (huffmanCompression/blockCompression);
+		
+		return ratio;
 	}
 	
 	/*
