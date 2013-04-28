@@ -10,8 +10,12 @@ public class Huffman {
 		Scanner stdin = null;
 		// map to hold words and frequencies of current set of speeches
 		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>();
+		// huffman tree made based on given subset of speeches
+		HuffmanTree<String> tree;
+		// map to hold the number of bits that represent each word in huffman
+		HashMap<String, Integer> bitsPerWord = new HashMap<String, Integer>();
 		// folder containing all speeches to be compressed
-		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata");
+		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\data\\testSpeeches");
 		File[] listOfFiles = folder.listFiles();
 		
 		// process all files in speech directory
@@ -31,8 +35,10 @@ public class Huffman {
 			}
 		}
 		
+		double huffmanComp = 0;
+		double blockComp = 0;
 		// build huffman code using subset of files
-		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\1789_04_30_3446.txt");
+		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\data\\testSpeeches\\brains.txt");
 		int numWords = 0;
 		if (!inFile.exists() || !inFile.canRead()) {
 			System.out.println("Improper file: " + inFile.getName());
@@ -41,14 +47,25 @@ public class Huffman {
 		try {
 			stdin = new Scanner(inFile);
 			parseFile(dictionary, stdin);
+			
 			stdin = new Scanner(inFile);
 			numWords = countWords(stdin);
+			
+			tree = makeHuffman(dictionary);
+			bitsPerWord = findBits(tree);
+			
+			stdin = new Scanner(inFile);
+			huffmanComp = calcHuffmanCompression(stdin, bitsPerWord);
+			blockComp = calcBlockCompression(dictionary, numWords);
+			
+			System.out.println("Huffman size : " + huffmanComp + "\nBlock Size : " + blockComp);
+			
 		} catch (FileNotFoundException ex) {
 			System.out.println("Unable to find file: " + inFile.getName());
 			System.exit(-1);
 		}
 		
-		HuffmanTree<String> tree = makeHuffman(dictionary);
+		
 		
 		// Test Code
 		/*Iterator<KeyWord> it = dictionary.iterator();
@@ -60,13 +77,30 @@ public class Huffman {
 		System.out.println("Height = " + height);
 		System.out.println("Root weight = " + tree.getRoot().getFreq());*/
 		
-		System.out.println("Dict size : " + dictionary.size());
-		System.out.println("# words : " + numWords);
-		System.out.println("Height : " + tree.getHeight());
-		double ratio = calcCompression(dictionary, tree, numWords);
-		System.out.println("compression ratio : " + ratio);
 	}
 	
+	/*
+	 * Creates a mapping of words to the number of bits needed to encode them
+	 */
+	public static HashMap<String, Integer> findBits(HuffmanTree<String> tree) {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+		Queue<HuffmanNode<String>> queue = new LinkedList<HuffmanNode<String>>();
+		queue.add(tree.getRoot());
+		tree.getRoot().setVisited(true);
+		while (!queue.isEmpty()) {
+			HuffmanNode<String> node = queue.remove();
+			map.put(node.getData(), node.getHeight());
+			if (node.leftChild != null && !node.leftChild.visited) {
+				node.leftChild.setVisited(true);
+				queue.add(node.leftChild);
+			}
+			if (node.rightChild != null && !node.rightChild.visited) {
+				node.rightChild.setVisited(true);
+				queue.add(node.rightChild);
+			}
+		}
+		return map;
+	}
 
 	/*
 	 * Returns number of words in speech to be compressed.
@@ -81,22 +115,29 @@ public class Huffman {
 	}
 	
 	/*
-	 * Calculates the compression ratio of huffman method over block method.
+	 * Calculates the compression using the huffman method
 	 */
-	public static double calcCompression(BSTDictionary<KeyWord> dictionary, HuffmanTree<String> tree, int numWords) {
-		double height = tree.getHeight();
+	public static double calcHuffmanCompression(Scanner stdin, HashMap<String, Integer> map) {
+		int size = 0;
+		while (stdin.hasNext()) {
+			String word = stdin.next();
+			int bits = map.get(word);
+			size += bits;
+		}
+		return size;
+	}
+	
+	/*
+	 * Calculates the compression of block method.
+	 */
+	public static double calcBlockCompression(BSTDictionary<KeyWord> dictionary, int numWords) {
 		double size = dictionary.size();
 		double blockCompression;
-		double huffmanCompression;
 		
 		blockCompression = (double)(Math.log(size)/Math.log(2));
 		blockCompression = blockCompression * numWords;
-		System.out.println("block compression : "  + blockCompression);
-		huffmanCompression = numWords * height;
-		System.out.println("huffman compression : " + huffmanCompression);
-		double ratio = (huffmanCompression/blockCompression);
 		
-		return ratio;
+		return blockCompression;
 	}
 	
 	/*
