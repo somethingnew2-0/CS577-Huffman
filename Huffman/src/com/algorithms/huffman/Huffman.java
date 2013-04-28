@@ -10,10 +10,8 @@ public class Huffman {
 		Scanner stdin = null;
 		// map to hold words and frequencies of current set of speeches
 		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>();
-		// holds info about all of the speeches
-		BSTDictionary<KeyWord> allSpeeches = new BSTDictionary<KeyWord>();
-		
-		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\testSpeeches");
+		// folder containing all speeches to be compressed
+		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata");
 		File[] listOfFiles = folder.listFiles();
 		
 		// process all files in speech directory
@@ -34,7 +32,7 @@ public class Huffman {
 		}
 		
 		// build huffman code using subset of files
-		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\testSpeeches\\brains.txt");
+		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\1789_04_30_3446.txt");
 		if (!inFile.exists() || !inFile.canRead()) {
 			System.out.println("Improper file: " + inFile.getName());
 			System.exit(-1);
@@ -59,7 +57,21 @@ public class Huffman {
 		System.out.println("Height = " + height);
 		System.out.println("Root weight = " + tree.getRoot().getFreq());*/
 		
+		System.out.println(dictionary.size());
+		calcCompression(dictionary, tree);
+	}
+	
+	public static double calcCompression(BSTDictionary<KeyWord> dictionary, HuffmanTree<String> tree) {
+		int height = tree.getHeight();
+		int size = dictionary.size();
+		double blockCompression;
+		double HuffmanCompression;
 		
+		blockCompression = (double)(Math.log(size)/Math.log(2));
+		System.out.println(blockCompression);
+		HuffmanCompression = size * height;
+		System.out.println(HuffmanCompression);
+		return 0;
 	}
 	
 	/*
@@ -121,26 +133,6 @@ public class Huffman {
 		tree.setRoot(newNode);
 		
 		return tree;
-	}
-	
-	//TODO: make way to measure height of tree -- internal data member or DFS
-	public static int height(HuffmanNode<String> root) {
-		
-		HuffmanNode<String> node = root;
-		int count = 0;
-		if (node.leftChild == null && node.rightChild == null) {
-			return count;
-		}
-		if (node.leftChild != null && node.rightChild == null) {
-			return height(node.leftChild) + count;
-		}
-		else if (node.leftChild == null && node.rightChild != null) {
-			return height(node.rightChild) + count;
-		}
-		else {
-			return Math.max(height(node.leftChild), height(node.rightChild));
-		}
-		
 	}
 	
 	/*
