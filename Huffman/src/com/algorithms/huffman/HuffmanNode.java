@@ -11,6 +11,7 @@ public class HuffmanNode<T> implements Comparable {
 		private T data;
 		private double frequency;
 		public boolean visited;
+		private int height;
 		private HuffmanNode<T> parent;
 		private List<HuffmanNode<T>> children;
 		public HuffmanNode<T> rightChild, leftChild;
@@ -29,6 +30,14 @@ public class HuffmanNode<T> implements Comparable {
 		
 		public double getFreq() {
 			return this.frequency;
+		}
+		
+		public int getHeight() {
+			return this.height;
+		}
+		
+		public void setHeight(int height) {
+			this.height = height;
 		}
 		
 		public void setParent(HuffmanNode<T> parent) {

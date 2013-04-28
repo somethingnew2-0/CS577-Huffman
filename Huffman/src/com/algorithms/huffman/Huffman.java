@@ -62,10 +62,12 @@ public class Huffman {
 		
 		System.out.println("Dict size : " + dictionary.size());
 		System.out.println("# words : " + numWords);
+		System.out.println("Height : " + tree.getHeight());
 		double ratio = calcCompression(dictionary, tree, numWords);
 		System.out.println("compression ratio : " + ratio);
 	}
 	
+
 	/*
 	 * Returns number of words in speech to be compressed.
 	 */
