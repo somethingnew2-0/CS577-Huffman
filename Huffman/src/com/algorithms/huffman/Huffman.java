@@ -13,7 +13,7 @@ public class Huffman {
 		// holds info about all of the speeches
 		BSTDictionary<KeyWord> allSpeeches = new BSTDictionary<KeyWord>();
 		
-		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata");
+		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\testSpeeches");
 		File[] listOfFiles = folder.listFiles();
 		
 		// process all files in speech directory
@@ -34,7 +34,7 @@ public class Huffman {
 		}
 		
 		// build huffman code using subset of files
-		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\2010_01_27_5706.txt");
+		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata\\testSpeeches\\brains.txt");
 		if (!inFile.exists() || !inFile.canRead()) {
 			System.out.println("Improper file: " + inFile.getName());
 			System.exit(-1);
@@ -48,16 +48,25 @@ public class Huffman {
 		}
 		
 		HuffmanTree<String> tree = makeHuffman(dictionary);
-		//int depth = tree.getDepth(tree.getRoot());
-		//System.out.println(depth + "\n" + dictionary.size());
+		
+		/* Test Code
+		Iterator<KeyWord> it = dictionary.iterator();
+		while (it.hasNext()) {
+			KeyWord word = it.next();
+			System.out.println(word.getWord() + ": " + word.getOccurrences());
+		}
+		int height = tree.getHeight();
+		System.out.println("Height = " + height);
+		System.out.println("Root weight = " + tree.getRoot().getFreq());*/
+		
+		
 	}
 	
 	/*
 	 * Create the Huffman code tree using the words in a certain set of speeches
 	 */
 	public static HuffmanTree<String> makeHuffman(BSTDictionary<KeyWord> dictionary) {
-		
-		
+				
 		// iterate over all words in the dictionary
 		Iterator<KeyWord> it = dictionary.iterator();
 		// queue of words sorted by frequency
@@ -91,8 +100,8 @@ public class Huffman {
 			newNode =  new HuffmanNode<String>();
 			newNode.setFreq(sum);
 			// add the other two nodes as its children
-			newNode.leftChild(node1);
-			newNode.rightChild(node2);
+			tree.addLeft(newNode, node1);
+			tree.addRight(newNode, node2);
 			node1.setParent(newNode);
 			node2.setParent(newNode);
 			queue.add(newNode);
@@ -105,13 +114,33 @@ public class Huffman {
 		newNode =  new HuffmanNode<String>();
 		newNode.setFreq(sum);
 		// add the other two nodes as its children
-		newNode.leftChild(node1);
-		newNode.rightChild(node2);
+		tree.addLeft(newNode, node1);
+		tree.addRight(newNode, node2);
 		node1.setParent(newNode);
 		node2.setParent(newNode);
 		tree.setRoot(newNode);
 		
 		return tree;
+	}
+	
+	//TODO: make way to measure height of tree -- internal data member or DFS
+	public static int height(HuffmanNode<String> root) {
+		
+		HuffmanNode<String> node = root;
+		int count = 0;
+		if (node.leftChild == null && node.rightChild == null) {
+			return count;
+		}
+		if (node.leftChild != null && node.rightChild == null) {
+			return height(node.leftChild) + count;
+		}
+		else if (node.leftChild == null && node.rightChild != null) {
+			return height(node.rightChild) + count;
+		}
+		else {
+			return Math.max(height(node.leftChild), height(node.rightChild));
+		}
+		
 	}
 	
 	/*
@@ -153,6 +182,7 @@ public class Huffman {
 	 * Takes each line in a file and adds each word to the dictionary, or, if already 
 	 * present, increments its value.
 	 */
+	//TODO: decide whether to use percentage or count of occurrences
 	public static void parseFile(BSTDictionary<KeyWord> dictionary, Scanner in) {
 		
 		while (in.hasNext()) {

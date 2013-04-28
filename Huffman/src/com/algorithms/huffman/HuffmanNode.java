@@ -39,14 +39,6 @@ public class HuffmanNode<T> implements Comparable {
 			this.visited = visited;
 		}
 		
-		public void leftChild(HuffmanNode<T> child) {
-			this.leftChild = child;
-		}
-		
-		public void rightChild(HuffmanNode<T> child) {
-			this.rightChild = child;
-		}
-		
 		public void removeChildren() {
 			this.rightChild = null;
 			this.leftChild = null;

@@ -5,11 +5,14 @@ import java.util.*;
 public class HuffmanTree<T> {
 
 	private HuffmanNode<T> root;
+	private int height;
 	
 	public HuffmanTree(T rootData) {
 		root = new HuffmanNode<T>();
 		root.setData(rootData);
-		root.removeChildren ();
+		root.removeChildren();
+		this.height = 0;
+
 	}
 	
 	public void setRoot(HuffmanNode<T> node) {
@@ -20,13 +23,21 @@ public class HuffmanTree<T> {
 		return this.root;
 	}
 	
-	public int getDepth(HuffmanNode<T> node) {		
-		if (node == null) {
-			System.out.println("node is null");
-			return 0;
+	public int getHeight() {
+		return this.height;
+	}
+	
+	public void addRight(HuffmanNode<T> parent, HuffmanNode<T> child) {
+		if (parent.leftChild == null && parent.rightChild == null) {
+			this.height++;
 		}
-		else {
-			return 1 + Math.max(getDepth(node.rightChild), getDepth(node.leftChild));
+		parent.rightChild = child;
+	}
+	
+	public void addLeft(HuffmanNode<T> parent, HuffmanNode<T> child) {
+		if (parent.leftChild == null && parent.rightChild == null) {
+			this.height++;
 		}
+		parent.leftChild = child;
 	}
 }
