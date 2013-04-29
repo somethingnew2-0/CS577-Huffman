@@ -6,7 +6,56 @@ import java.io.*;
 public class Huffman {
 
 	public static void main (String args[]) {
+
+		String folder1 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
+		String folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent1";
+		String outFile = "recent1.txt";
+		processFiles(folder1, folder2, outFile);
 		
+		/*folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent2";
+		outFile = "recent2.txt";
+		processFiles(folder1, folder2, outFile);
+		
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent10";
+		outFile = "recent10.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent100";
+		outFile = "recent100.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent300";
+		outFile = "recent300.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old2";
+		outFile = "old2.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old10";
+		outFile = "old10.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old100";
+		outFile = "old100.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old300";
+		outFile = "old300.out";
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
+		outFile = "all.out";
+		processFiles(folder1, folder2, outFile);*/
+
+	}
+
+
+	/*
+	 * folderName1 : folder containing all the speeches
+	 * folderName2 : folder containing subset of speeches used to build the Huffman Code
+	 */
+	public static void processFiles (String folderName1, String folderName2, String outFileName)      {
 		Scanner stdin = null;
 		// map to hold words and frequencies of current set of speeches
 		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>();
@@ -15,70 +64,75 @@ public class Huffman {
 		// map to hold the number of bits that represent each word in huffman
 		HashMap<String, Integer> bitsPerWord = new HashMap<String, Integer>();
 		// folder containing all speeches to be compressed
-		File folder = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\data\\testSpeeches");
-		File[] listOfFiles = folder.listFiles();
-		
+		File folder1 = new File(folderName1);
+		File[] allSpeeches = folder1.listFiles();
+
 		// process all files in speech directory
-		for (File inFile : listOfFiles) {
+		for (File inFile : allSpeeches) {
 			// check if file exits and can be read
 			if (!inFile.exists() || !inFile.canRead()) {
 				System.out.println("Improper file: " + inFile.getName());
 				System.exit(-1);
-			}
+			}//end if
 			try {
 				stdin = new Scanner(inFile);
 				// add all words from all speeches with a frequency of 1
-			    smooth(dictionary, stdin);
+				smooth(dictionary, stdin);
 			} catch (FileNotFoundException ex) {
 				System.out.println("Unable to find file: " + inFile.getName());
 				System.exit(-1);
-			}
-		}
-		
+			}//end try-catch
+		}//end for
+
 		double huffmanComp = 0;
 		double blockComp = 0;
-		// build huffman code using subset of files
-		File inFile = new File("\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\data\\testSpeeches\\brains.txt");
 		int numWords = 0;
-		if (!inFile.exists() || !inFile.canRead()) {
-			System.out.println("Improper file: " + inFile.getName());
-			System.exit(-1);
-		}
-		try {
-			stdin = new Scanner(inFile);
-			parseFile(dictionary, stdin);
+		// build huffman code using subset of files
+		File folder2 = new File(folderName2);
+		File[] listOfFiles = folder2.listFiles();
+		// process subset of files to make huffman code
+		for (File inFile : listOfFiles) {
+			System.out.println(inFile.getName());
+			if (!inFile.exists() || !inFile.canRead()) {
+				System.out.println("Improper file: " + inFile.getName());
+				System.exit(-1);
+			}//end if
+			try {
+				stdin = new Scanner(inFile);
+				parseFile(dictionary, stdin);
+
+			} catch (FileNotFoundException ex) {
+				System.out.println("Unable to find file: " + inFile.getName());
+				System.exit(-1);
+			}// end try-catch
+		} //end-for
+		
+		tree = makeHuffman(dictionary);
+		bitsPerWord = findBits(tree);
 			
-			stdin = new Scanner(inFile);
-			numWords = countWords(stdin);
-			
-			tree = makeHuffman(dictionary);
-			bitsPerWord = findBits(tree);
-			
-			stdin = new Scanner(inFile);
+		for (File speech : allSpeeches) {
+			// calculate compression ratio for all speeches
+			try {
+				stdin = new Scanner(speech);
+				numWords = countWords(stdin);
+				stdin = new Scanner(speech);
+			} catch(FileNotFoundException e) {
+				System.out.println("Unable to find fine: " + speech.getName());
+			}
 			huffmanComp = calcHuffmanCompression(stdin, bitsPerWord);
 			blockComp = calcBlockCompression(dictionary, numWords);
-			
-			System.out.println("Huffman size : " + huffmanComp + "\nBlock Size : " + blockComp);
-			
-		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to find file: " + inFile.getName());
-			System.exit(-1);
-		}
-		
-		
-		
-		// Test Code
-		/*Iterator<KeyWord> it = dictionary.iterator();
-		while (it.hasNext()) {
-			KeyWord word = it.next();
-			System.out.println(word.getWord() + ": " + word.getOccurrences());
-		}
-		int height = tree.getHeight();
-		System.out.println("Height = " + height);
-		System.out.println("Root weight = " + tree.getRoot().getFreq());*/
-		
+			double ratio = huffmanComp/blockComp;
+			try {
+				File outFile = new File(outFileName);
+				PrintWriter out = new PrintWriter(outFile);
+				out.append("\n" + ratio);
+			} catch (IOException e) {
+				System.out.println("Could not write to file : " + speech.getName());
+			} 
+		} //end-for
 	}
-	
+
+
 	/*
 	 * Creates a mapping of words to the number of bits needed to encode them
 	 */
@@ -113,7 +167,7 @@ public class Huffman {
 		}
 		return count;
 	}
-	
+
 	/*
 	 * Calculates the compression using the huffman method
 	 */
@@ -121,30 +175,35 @@ public class Huffman {
 		int size = 0;
 		while (stdin.hasNext()) {
 			String word = stdin.next();
-			int bits = map.get(word);
-			size += bits;
+			try {
+				int bits = map.get(word);
+				size += bits;
+			} catch (NullPointerException e) {
+				System.out.println(word);
+				System.exit(-1);
+			}
 		}
 		return size;
 	}
-	
+
 	/*
 	 * Calculates the compression of block method.
 	 */
 	public static double calcBlockCompression(BSTDictionary<KeyWord> dictionary, int numWords) {
 		double size = dictionary.size();
 		double blockCompression;
-		
+
 		blockCompression = (double)(Math.log(size)/Math.log(2));
 		blockCompression = blockCompression * numWords;
-		
+
 		return blockCompression;
 	}
-	
+
 	/*
 	 * Create the Huffman code tree using the words in a certain set of speeches
 	 */
 	public static HuffmanTree<String> makeHuffman(BSTDictionary<KeyWord> dictionary) {
-				
+
 		// iterate over all words in the dictionary
 		Iterator<KeyWord> it = dictionary.iterator();
 		// queue of words sorted by frequency
@@ -162,12 +221,12 @@ public class Huffman {
 			node.removeChildren();
 			queue.add(node);
 		}
-		
+
 		// make first node in list the root
 		HuffmanTree<String> tree = new HuffmanTree(queue.peek());
 		double sum;
 		HuffmanNode<String> newNode;
-		
+
 		// make sure at least 2 nodes left in the queue
 		while(queue.size() > 2) {
 			node1 = queue.poll();
@@ -184,7 +243,7 @@ public class Huffman {
 			node2.setParent(newNode);
 			queue.add(newNode);
 		}
-		
+
 		node1 = queue.poll();
 		node2 = queue.poll();
 		sum = node1.getFreq() + node2.getFreq();
@@ -197,10 +256,10 @@ public class Huffman {
 		node1.setParent(newNode);
 		node2.setParent(newNode);
 		tree.setRoot(newNode);
-		
+
 		return tree;
 	}
-	
+
 	/*
 	 * Add one to the count for every word in all the speeches
 	 */
@@ -208,72 +267,61 @@ public class Huffman {
 		while (in.hasNext()) {
 			String line = in.next();
 			String[] tokens = line.split("[ ]+");
-			
+
 			for (String word : tokens) {
-				
+
 				int first = findFirst(word);
 				int last = findLast(word, first);
-				
+
 				// trim string so it starts and ends with letter/digit
 				word = word.substring(first, last + 1);
-				
-				boolean done = isLetter(word);
-				
-				// if letter was found, increment its value in the dictionary
-				if (done) {
-					KeyWord keyword;
-					try {
-						// try inserting new keyword
-						keyword = new KeyWord(word.toLowerCase());
-						keyword.increment();
-						dictionary.insert(keyword);
-					} catch (DuplicateKeyException e) {
-						// if already in dictionary, do nothing
-						;
-					}
+
+				// increment value in dictionary
+				KeyWord keyword;
+				try {
+					// try inserting new keyword
+					keyword = new KeyWord(word.toLowerCase());
+					keyword.increment();						dictionary.insert(keyword);
+				} catch (DuplicateKeyException e) {
+					// if already in dictionary, do nothing
+					;
 				}
 			} // end outer while
 		}
 	}
-	
+
 	/*
 	 * Takes each line in a file and adds each word to the dictionary, or, if already 
 	 * present, increments its value.
 	 */
 	//TODO: decide whether to use percentage or count of occurrences
 	public static void parseFile(BSTDictionary<KeyWord> dictionary, Scanner in) {
-		
+
 		while (in.hasNext()) {
 			String line = in.next();
 			String[] tokens = line.split("[ ]+");
 			for (String word : tokens) {
-				
+
 				int first = findFirst(word);
 				int last = findLast(word, first);
-				
+
 				// trim string so it starts and ends with letter/digit
 				word = word.substring(first, last + 1);
-				
-				boolean done = isLetter(word);
-				
-				// if letter was found, increment its value in the dictionary
-				if (done) {
-					KeyWord keyword;
-					try {
-						// try inserting new keyword
-						keyword = new KeyWord(word.toLowerCase());
-						keyword.increment();
-						dictionary.insert(keyword);
-					} catch (DuplicateKeyException e) {
-						// if already in dictionary, just increment occurences
-						keyword = dictionary.lookup(new KeyWord(word.toLowerCase()));
-						keyword.increment();
-					}
-				}
+
+				KeyWord keyword;
+				try {
+					// try inserting new keyword
+					keyword = new KeyWord(word.toLowerCase());
+					keyword.increment();						dictionary.insert(keyword);
+				} catch (DuplicateKeyException e) {
+					// if already in dictionary, just increment occurences
+					keyword = dictionary.lookup(new KeyWord(word.toLowerCase()));
+					keyword.increment();
+				}//end try-catch
 			} // end outer while
 		}
 	}
-	
+
 	/*
 	 * Finds position of first letter or digit in word
 	 */
@@ -289,10 +337,10 @@ public class Huffman {
 				first++;
 			}
 		} // end while
-		
+
 		return first;
 	}
-	
+
 	/*
 	 * Finds position of last letter or digit in word
 	 */
@@ -309,23 +357,5 @@ public class Huffman {
 			}
 		} // end while
 		return last;
-	}
-	
-	/*
-	 * Returns true if there is at least one letter in the given word
-	 */
-	public static boolean isLetter(String word) {
-		// make sure there is at least one letter in the word
-		boolean done = false;
-		int first = 0;
-		while (first < word.length() && !done) {
-			if (Character.isLetter(word.charAt(first))) {
-				done = true;
-			}
-			else {
-				first++;
-			}
-		} // end while
-		return done;
 	}
 }
