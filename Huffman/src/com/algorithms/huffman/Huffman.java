@@ -9,44 +9,44 @@ public class Huffman {
 
 		String folder1 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
 		String folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent1";
-		File outFile = new File("recent1.txt");
+		File outFile = new File("recent1.out");
 		processFiles(folder1, folder2, outFile);
 		
-		/*folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent2";
-		outFile = "recent2.txt";
+		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent2";
+		outFile = new File("recent2.out");
 		processFiles(folder1, folder2, outFile);
 		
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent10";
-		outFile = "recent10.out";
+		outFile = new File("recent10.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent100";
-		outFile = "recent100.out";
+		outFile = new File("recent100.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent300";
-		outFile = "recent300.out";
+		outFile = new File("recent300.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old2";
-		outFile = "old2.out";
+		outFile = new File("old2.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old10";
-		outFile = "old10.out";
+		outFile = new File("old10.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old100";
-		outFile = "old100.out";
+		outFile = new File("old100.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old300";
-		outFile = "old300.out";
+		outFile = new File("old300.out");
 		processFiles(folder1, folder2, outFile);
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
-		outFile = "all.out";
-		processFiles(folder1, folder2, outFile);*/
+		outFile = new File("all.out");
+		processFiles(folder1, folder2, outFile);
 
 	}
 
@@ -92,7 +92,6 @@ public class Huffman {
 		File[] listOfFiles = folder2.listFiles();
 		// process subset of files to make huffman code
 		for (File inFile : listOfFiles) {
-			System.out.println(inFile.getName());
 			if (!inFile.exists() || !inFile.canRead()) {
 				System.out.println("Improper file: " + inFile.getName());
 				System.exit(-1);
@@ -109,7 +108,7 @@ public class Huffman {
 		
 		tree = makeHuffman(dictionary);
 		bitsPerWord = findBits(tree);
-
+	
 		try {
 			PrintWriter out = new PrintWriter(outFileName);
 			for (File speech : allSpeeches) {
@@ -119,14 +118,14 @@ public class Huffman {
 					numWords = countWords(stdin);
 					stdin = new Scanner(speech);
 				} catch(FileNotFoundException e) {
-					System.out.println("Unable to find fine: " + speech.getName());
+					System.out.println("Unable to find file: " + speech.getName());
 				}
 				huffmanComp = calcHuffmanCompression(stdin, bitsPerWord);
 				blockComp = calcBlockCompression(dictionary, numWords);
 				double ratio = huffmanComp/blockComp;
-				out.append("\n" + ratio);
-
+				out.println(ratio);
 			} //end-for
+			out.close();
 		} catch (IOException e) {
 			System.out.println("Could not write to file");
 		} 
