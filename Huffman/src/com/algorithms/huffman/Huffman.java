@@ -16,7 +16,7 @@ public class Huffman {
 		outFile = new File("recent2.out");
 		processFiles(folder1, folder2, outFile);
 		
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent10";
+		/*folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent10";
 		outFile = new File("recent10.out");
 		processFiles(folder1, folder2, outFile);
 
@@ -46,7 +46,7 @@ public class Huffman {
 
 		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
 		outFile = new File("all.out");
-		processFiles(folder1, folder2, outFile);
+		processFiles(folder1, folder2, outFile);*/
 
 	}
 
@@ -141,8 +141,13 @@ public class Huffman {
 		queue.add(tree.getRoot());
 		tree.getRoot().setVisited(true);
 		while (!queue.isEmpty()) {
+			// get the front node from the queue
 			HuffmanNode<String> node = queue.remove();
-			map.put(node.getData(), node.getHeight());
+			// if it is a leaf node, add it to the map
+			if (node.leftChild == null && node.rightChild == null) {
+				map.put(node.getData(), node.getHeight());
+			}
+			// if not, add its children to the queue
 			if (node.leftChild != null && !node.leftChild.visited) {
 				node.leftChild.setVisited(true);
 				queue.add(node.leftChild);
