@@ -7,16 +7,16 @@ public class Huffman {
 
 	public static void main (String args[]) {
 
-		String folder1 = "speechData";
+		String folder1 = "speechdata";
 		String folder2 = "recent1";
 		File outFile = new File("recent1.out");
 		processFiles(folder1, folder2, outFile);
 		
-		/*folder2 = "recent2";
+		folder2 = "recent2";
 		outFile = new File("recent2.out");
 		processFiles(folder1, folder2, outFile);
 		
-		folder2 = "recent10";
+		/*folder2 = "recent10";
 		outFile = new File("recent10.out");
 		processFiles(folder1, folder2, outFile);
 
@@ -116,9 +116,6 @@ public class Huffman {
 			for (File speech : allSpeeches) {
 				// calculate compression ratio for all speeches
 				String[] tokens = speech.getName().split("[ _.]+");
-				for (String str : tokens) {
-					System.out.println(str);
-				}
 				dates.println(tokens[1] + "/" + tokens[2] + "/" + tokens[0]);
 				try {
 					stdin = new Scanner(speech);
@@ -136,7 +133,8 @@ public class Huffman {
 			dates.close();
 		} catch (IOException e) {
 			System.out.println("Could not write to file");
-		} 
+		}
+		System.out.println(bitsPerWord.size());
 	}
 
 
@@ -148,12 +146,15 @@ public class Huffman {
 		Queue<HuffmanNode<String>> queue = new LinkedList<HuffmanNode<String>>();
 		queue.add(tree.getRoot());
 		tree.getRoot().setVisited(true);
+		int height = 0;
 		while (!queue.isEmpty()) {
 			// get the front node from the queue
 			HuffmanNode<String> node = queue.remove();
 			// if it is a leaf node, add it to the map
 			if (node.leftChild == null && node.rightChild == null) {
-				map.put(node.getData(), node.getHeight());
+				height = tree.getHeight() - node.getHeight();
+				map.put(node.getData(), height);
+				System.out.println(height);
 			}
 			// if not, add its children to the queue
 			if (node.leftChild != null && !node.leftChild.visited) {

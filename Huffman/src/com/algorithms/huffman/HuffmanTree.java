@@ -11,8 +11,6 @@ public class HuffmanTree<T> {
 		root = new HuffmanNode<T>();
 		root.setData(rootData);
 		root.removeChildren();
-		this.height = 0;
-
 	}
 	
 	public void setRoot(HuffmanNode<T> node) {
@@ -23,7 +21,7 @@ public class HuffmanTree<T> {
 		return this.root;
 	}
 	
-	public int getHeight() {
+	public int getHeight(){
 		return this.height;
 	}
 	
