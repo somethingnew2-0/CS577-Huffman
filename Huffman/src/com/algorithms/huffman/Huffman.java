@@ -7,44 +7,44 @@ public class Huffman {
 
 	public static void main (String args[]) {
 
-		String folder1 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
-		String folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent1";
+		String folder1 = "speechdata";
+		String folder2 = "recent1";
 		File outFile = new File("recent1.out");
 		processFiles(folder1, folder2, outFile);
 		
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent2";
+		folder2 = "recent2";
 		outFile = new File("recent2.out");
 		processFiles(folder1, folder2, outFile);
 		
-		/*folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent10";
+		/*folder2 = "recent10";
 		outFile = new File("recent10.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent100";
+		folder2 = "recent100";
 		outFile = new File("recent100.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent300";
+		folder2 = "recent300";
 		outFile = new File("recent300.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old2";
+		folder2 = "old2";
 		outFile = new File("old2.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old10";
+		folder2 = "old10";
 		outFile = new File("old10.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old100";
+		folder2 = "old100";
 		outFile = new File("old100.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\old300";
+		folder2 = "old300";
 		outFile = new File("old300.out");
 		processFiles(folder1, folder2, outFile);
 
-		folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
+		folder2 = "speechdata";
 		outFile = new File("all.out");
 		processFiles(folder1, folder2, outFile);*/
 
