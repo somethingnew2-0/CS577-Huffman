@@ -9,7 +9,7 @@ public class Huffman {
 
 		String folder1 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\speechdata";
 		String folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent1";
-		String outFile = "recent1.txt";
+		File outFile = new File("recent1.txt");
 		processFiles(folder1, folder2, outFile);
 		
 		/*folder2 = "\\Users\\Kristin\\Documents\\GitHub\\CS577-Huffman\\Huffman\\recent2";
@@ -55,7 +55,7 @@ public class Huffman {
 	 * folderName1 : folder containing all the speeches
 	 * folderName2 : folder containing subset of speeches used to build the Huffman Code
 	 */
-	public static void processFiles (String folderName1, String folderName2, String outFileName)      {
+	public static void processFiles (String folderName1, String folderName2, File outFileName)      {
 		Scanner stdin = null;
 		// map to hold words and frequencies of current set of speeches
 		BSTDictionary<KeyWord> dictionary = new BSTDictionary<KeyWord>();
@@ -109,27 +109,27 @@ public class Huffman {
 		
 		tree = makeHuffman(dictionary);
 		bitsPerWord = findBits(tree);
-			
-		for (File speech : allSpeeches) {
-			// calculate compression ratio for all speeches
-			try {
-				stdin = new Scanner(speech);
-				numWords = countWords(stdin);
-				stdin = new Scanner(speech);
-			} catch(FileNotFoundException e) {
-				System.out.println("Unable to find fine: " + speech.getName());
-			}
-			huffmanComp = calcHuffmanCompression(stdin, bitsPerWord);
-			blockComp = calcBlockCompression(dictionary, numWords);
-			double ratio = huffmanComp/blockComp;
-			try {
-				File outFile = new File(outFileName);
-				PrintWriter out = new PrintWriter(outFile);
+
+		try {
+			PrintWriter out = new PrintWriter(outFileName);
+			for (File speech : allSpeeches) {
+				// calculate compression ratio for all speeches
+				try {
+					stdin = new Scanner(speech);
+					numWords = countWords(stdin);
+					stdin = new Scanner(speech);
+				} catch(FileNotFoundException e) {
+					System.out.println("Unable to find fine: " + speech.getName());
+				}
+				huffmanComp = calcHuffmanCompression(stdin, bitsPerWord);
+				blockComp = calcBlockCompression(dictionary, numWords);
+				double ratio = huffmanComp/blockComp;
 				out.append("\n" + ratio);
-			} catch (IOException e) {
-				System.out.println("Could not write to file : " + speech.getName());
-			} 
-		} //end-for
+
+			} //end-for
+		} catch (IOException e) {
+			System.out.println("Could not write to file");
+		} 
 	}
 
 
