@@ -7,8 +7,8 @@ public class Huffman {
 
 	public static void main (String args[]) {
 
-		String folder1 = "testSpeeches";
-		String folder2 = "testSpeeches";
+		String folder1 = "speechdata";
+		String folder2 = "speechdata";
 		File outFile = new File("test.out");
 		processFiles(folder1, folder2, outFile);
 		
