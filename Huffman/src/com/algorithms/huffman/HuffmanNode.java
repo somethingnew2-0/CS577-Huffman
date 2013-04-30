@@ -55,17 +55,7 @@ public class HuffmanNode<T> implements Comparable {
 		
 		public int compareTo(Object other) {
 			if (other instanceof HuffmanNode) {
-				other = (HuffmanNode<T>)other;
-			
-				if (this.frequency < ((HuffmanNode<T>) other).getFreq()) {
-					return 1;
-				}
-				else if (this.frequency > ((HuffmanNode<T>) other).getFreq()) {
-					return -1;
-				}
-				else {
-					return 0;
-				}
+				return (int) (this.frequency - ((HuffmanNode<T>) other).getFreq());
 			} else {
 				return 0;
 			}
