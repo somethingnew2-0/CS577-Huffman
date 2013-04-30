@@ -107,6 +107,7 @@ public class Huffman {
 		} //end-for
 		
 		tree = makeHuffman(dictionary);
+		setHeights(tree.getRoot());
 		bitsPerWord = findBits(tree);
 	
 		try {
@@ -152,9 +153,8 @@ public class Huffman {
 			HuffmanNode<String> node = queue.remove();
 			// if it is a leaf node, add it to the map
 			if (node.leftChild == null && node.rightChild == null) {
-				height = tree.getHeight() - node.getHeight();
+				height = node.getHeight();
 				map.put(node.getData(), height);
-				System.out.println(height);
 			}
 			// if not, add its children to the queue
 			if (node.leftChild != null && !node.leftChild.visited) {
@@ -169,6 +169,22 @@ public class Huffman {
 		return map;
 	}
 
+	/*
+	 * 
+	 */
+	public static void setHeights(HuffmanNode<String> root) {
+		setHeights(root, 0);
+	}
+	
+	public static void setHeights(HuffmanNode<String> root, int height) {
+		if(root != null) {
+			root.setHeight(height);
+			setHeights(root.leftChild, height+1);
+			setHeights(root.rightChild, height+1);
+		}
+	}
+	
+	
 	/*
 	 * Returns number of words in speech to be compressed.
 	 */
@@ -254,6 +270,16 @@ public class Huffman {
 			tree.addRight(newNode, node2);
 			node1.setParent(newNode);
 			node2.setParent(newNode);
+			if (node1.getHeight() == 0 && node2.getHeight() != 0) {
+				
+			}
+			if (node1.leftChild == null && node1.rightChild == null) {
+				node1.setHeight(1);
+			}
+			if (node2.leftChild == null && node2.rightChild == null) {
+				node2.setHeight(1);
+			}
+			newNode.setHeight(node2.getHeight() + 1);
 			queue.add(newNode);
 		}
 
