@@ -7,9 +7,9 @@ public class Huffman {
 
 	public static void main (String args[]) {
 
-		String folder1 = "speechdata";
-		String folder2 = "recent1";
-		File outFile = new File("recent1.out");
+		String folder1 = "testSpeeches";
+		String folder2 = "testSpeeches";
+		File outFile = new File("test.out");
 		processFiles(folder1, folder2, outFile);
 		
 		folder2 = "recent2";
@@ -117,7 +117,7 @@ public class Huffman {
 			for (File speech : allSpeeches) {
 				// calculate compression ratio for all speeches
 				String[] tokens = speech.getName().split("[ _.]+");
-				dates.println(tokens[1] + "/" + tokens[2] + "/" + tokens[0]);
+				//dates.println(tokens[1] + "/" + tokens[2] + "/" + tokens[0]);
 				try {
 					stdin = new Scanner(speech);
 					numWords = countWords(stdin);
@@ -270,15 +270,6 @@ public class Huffman {
 			tree.addRight(newNode, node2);
 			node1.setParent(newNode);
 			node2.setParent(newNode);
-			if (node1.getHeight() == 0 && node2.getHeight() != 0) {
-				
-			}
-			if (node1.leftChild == null && node1.rightChild == null) {
-				node1.setHeight(1);
-			}
-			if (node2.leftChild == null && node2.rightChild == null) {
-				node2.setHeight(1);
-			}
 			newNode.setHeight(node2.getHeight() + 1);
 			queue.add(newNode);
 		}
