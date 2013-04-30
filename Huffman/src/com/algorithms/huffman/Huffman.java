@@ -8,45 +8,45 @@ public class Huffman {
 	public static void main (String args[]) {
 
 		String folder1 = "speechdata";
-		String folder2 = "speechdata";
-		File outFile = new File("test.out");
+		String folder2 = "recent1";
+		File outFile = new File("recent1.out");
 		processFiles(folder1, folder2, outFile);
 		
-		folder2 = "recent2";
-		outFile = new File("recent2.out");
-		processFiles(folder1, folder2, outFile);
-		
-		/*folder2 = "recent10";
-		outFile = new File("recent10.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "recent100";
-		outFile = new File("recent100.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "recent300";
-		outFile = new File("recent300.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old2";
-		outFile = new File("old2.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old10";
-		outFile = new File("old10.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old100";
-		outFile = new File("old100.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old300";
-		outFile = new File("old300.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "speechdata";
-		outFile = new File("all.out");
-		processFiles(folder1, folder2, outFile);*/
+//		folder2 = "recent2";
+//		outFile = new File("recent2.out");
+//		processFiles(folder1, folder2, outFile);
+//		
+//		folder2 = "recent10";
+//		outFile = new File("recent10.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "recent100";
+//		outFile = new File("recent100.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "recent300";
+//		outFile = new File("recent300.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old2";
+//		outFile = new File("old2.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old10";
+//		outFile = new File("old10.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old100";
+//		outFile = new File("old100.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old300";
+//		outFile = new File("old300.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "speechdata";
+//		outFile = new File("all.out");
+//		processFiles(folder1, folder2, outFile);
 
 	}
 
@@ -117,7 +117,7 @@ public class Huffman {
 			for (File speech : allSpeeches) {
 				// calculate compression ratio for all speeches
 				String[] tokens = speech.getName().split("[ _.]+");
-				//dates.println(tokens[1] + "/" + tokens[2] + "/" + tokens[0]);
+				dates.println(tokens[1] + "/" + tokens[2] + "/" + tokens[0]);
 				try {
 					stdin = new Scanner(speech);
 					numWords = countWords(stdin);
@@ -135,7 +135,6 @@ public class Huffman {
 		} catch (IOException e) {
 			System.out.println("Could not write to file");
 		}
-		System.out.println(bitsPerWord.size());
 	}
 
 
@@ -342,7 +341,8 @@ public class Huffman {
 				try {
 					// try inserting new keyword
 					keyword = new KeyWord(word.toLowerCase());
-					keyword.increment();						dictionary.insert(keyword);
+					dictionary.insert(keyword);
+					keyword.increment();
 				} catch (DuplicateKeyException e) {
 					// if already in dictionary, just increment occurences
 					keyword = dictionary.lookup(new KeyWord(word.toLowerCase()));
