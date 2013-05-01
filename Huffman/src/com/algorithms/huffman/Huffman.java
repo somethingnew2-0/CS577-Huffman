@@ -8,45 +8,45 @@ public class Huffman {
 	public static void main (String args[]) {
 
 		String folder1 = "speechdata";
-		String folder2 = "recent1";
+     	String folder2 = "recent1";
 		File outFile = new File("recent1.out");
-		processFiles(folder1, folder2, outFile);
-		
+//		processFiles(folder1, folder2, outFile);
+//		
 		folder2 = "recent2";
 		outFile = new File("recent2.out");
 		processFiles(folder1, folder2, outFile);
-		
-		folder2 = "recent10";
-		outFile = new File("recent10.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "recent100";
-		outFile = new File("recent100.out");
-		processFiles(folder1, folder2, outFile);
+//		
+//		folder2 = "recent10";
+//		outFile = new File("recent10.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "recent100";
+//		outFile = new File("recent100.out");
+//		processFiles(folder1, folder2, outFile);
 
 		folder2 = "recent300";
 		outFile = new File("recent300.out");
 		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old2";
-		outFile = new File("old2.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old10";
-		outFile = new File("old10.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old100";
-		outFile = new File("old100.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "old300";
-		outFile = new File("old300.out");
-		processFiles(folder1, folder2, outFile);
-
-		folder2 = "speechdata";
-		outFile = new File("all.out");
-		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old2";
+//		outFile = new File("old2.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old10";
+//		outFile = new File("old10.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old100";
+//		outFile = new File("old100.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "old300";
+//		outFile = new File("old300.out");
+//		processFiles(folder1, folder2, outFile);
+//
+//		folder2 = "speechdata";
+//		outFile = new File("all.out");
+//		processFiles(folder1, folder2, outFile);
 
 	}
 
@@ -109,7 +109,7 @@ public class Huffman {
 		tree = makeHuffman(dictionary);
 		setHeights(tree.getRoot());
 		bitsPerWord = findBits(tree);
-	
+		
 		try {
 			PrintWriter out = new PrintWriter(outFileName);
 			File dateFile = new File("dates.txt");
@@ -147,12 +147,16 @@ public class Huffman {
 		queue.add(tree.getRoot());
 		tree.getRoot().setVisited(true);
 		int height = 0;
+		int maxHeight = 0;
 		while (!queue.isEmpty()) {
 			// get the front node from the queue
 			HuffmanNode<String> node = queue.remove();
 			// if it is a leaf node, add it to the map
 			if (node.leftChild == null && node.rightChild == null) {
 				height = node.getHeight();
+				if (height > maxHeight) {
+					maxHeight = height;
+				}
 				map.put(node.getData(), height);
 			}
 			// if not, add its children to the queue
@@ -165,6 +169,7 @@ public class Huffman {
 				queue.add(node.rightChild);
 			}
 		}
+		System.out.println("Max Code Length : " + maxHeight);
 		return map;
 	}
 
@@ -222,7 +227,6 @@ public class Huffman {
 		double blockCompression;
 
 		blockCompression = (double)(Math.log(size)/Math.log(2));
-		System.out.println(blockCompression);
 		blockCompression = blockCompression * numWords;
 		
 
