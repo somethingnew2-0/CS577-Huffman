@@ -12,41 +12,41 @@ public class Huffman {
 		File outFile = new File("recent1.out");
 		processFiles(folder1, folder2, outFile);
 		
-//		folder2 = "recent2";
-//		outFile = new File("recent2.out");
-//		processFiles(folder1, folder2, outFile);
-//		
-//		folder2 = "recent10";
-//		outFile = new File("recent10.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "recent100";
-//		outFile = new File("recent100.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "recent300";
-//		outFile = new File("recent300.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "old2";
-//		outFile = new File("old2.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "old10";
-//		outFile = new File("old10.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "old100";
-//		outFile = new File("old100.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "old300";
-//		outFile = new File("old300.out");
-//		processFiles(folder1, folder2, outFile);
-//
-//		folder2 = "speechdata";
-//		outFile = new File("all.out");
-//		processFiles(folder1, folder2, outFile);
+		folder2 = "recent2";
+		outFile = new File("recent2.out");
+		processFiles(folder1, folder2, outFile);
+		
+		folder2 = "recent10";
+		outFile = new File("recent10.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "recent100";
+		outFile = new File("recent100.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "recent300";
+		outFile = new File("recent300.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "old2";
+		outFile = new File("old2.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "old10";
+		outFile = new File("old10.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "old100";
+		outFile = new File("old100.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "old300";
+		outFile = new File("old300.out");
+		processFiles(folder1, folder2, outFile);
+
+		folder2 = "speechdata";
+		outFile = new File("all.out");
+		processFiles(folder1, folder2, outFile);
 
 	}
 
@@ -222,7 +222,9 @@ public class Huffman {
 		double blockCompression;
 
 		blockCompression = (double)(Math.log(size)/Math.log(2));
-		blockCompression = blockCompression * size;
+		System.out.println(blockCompression);
+		blockCompression = blockCompression * numWords;
+		
 
 		return blockCompression;
 	}
